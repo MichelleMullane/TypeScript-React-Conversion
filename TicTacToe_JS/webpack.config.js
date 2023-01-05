@@ -1,18 +1,36 @@
 module.exports = {
-  entry: './src/app.jsx',
+  // change to .tsx if necessary
+  entry: "./src/app.jsx",
   output: {
-    filename: './bundle.js'
+    filename: "./bundle.js",
   },
+  mode: "development",
   resolve: {
-    extensions: [".js", ".jsx"]
+    // changed from extensions: [".js", ".jsx"]
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
   module: {
     rules: [
-      { test: /\.jsx?$/, exclude: /node_modules/, use: { loader: 'babel-loader' } }
-    ]
+      // changed from { test: /\.jsx?$/, use: { loader: 'babel-loader' }, exclude: /node_modules/ },
+      {
+        test: /\.(t|j)sx?$/,
+        use: { loader: "ts-loader" },
+        exclude: /node_modules/,
+      },
+
+      // addition - add source-map support
+      {
+        enforce: "pre",
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "source-map-loader",
+      },
+    ],
   },
   externals: {
-    "react": "React",
+    react: "React",
     "react-dom": "ReactDOM",
   },
-}
+  // addition - add source-map support
+  devtool: "source-map",
+};
